@@ -3,7 +3,7 @@ const amqp = require("amqplib/callback_api");
 const app = express()
 const port = 3000
 
-const LENGH = 10;
+const LENGH = 100;
 const MAX_VALUE = 10;
 const QUEUE_URL = 'amqp://3.38.107.113';
 
