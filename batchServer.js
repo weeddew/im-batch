@@ -7,7 +7,9 @@ const LENGH = 100;
 const MAX_VALUE = 10;
 const QUEUE_URL = 'amqp://3.38.107.113';
 
-/**
+let data = [];
+
+    /**
  * index 페이지
  */
 app.get('/', (req, res) => {
@@ -19,7 +21,7 @@ app.get('/', (req, res) => {
  * 데이터 생성 후 SEND 큐로 보냄
  */
 app.get('/start', (req, res) => {
-    let data = Array.from({length: LENGH}, (v,i) => {return {id: i, value: Math.floor(Math.random() * MAX_VALUE)+1}});
+    data = Array.from({length: LENGH}, (v,i) => {return {id: i, value: Math.floor(Math.random() * MAX_VALUE)+1}});
 
     // 5초후 실행
     setTimeout(() => {
@@ -74,8 +76,13 @@ app.get('/events', async function(req, res) {
                 count++;
                 console.log(" [x] Received %s", msg.content.toString());
                 const obj = JSON.parse(msg.content.toString());
-                // res.write(msg.content.toString());
-                res.write(`data: ${JSON.stringify(obj)}\n\n`);
+
+                // 큐에서 가져온 한 건만 보내도록 했으나 SSE를 사용하는 중 소실되는 문제 발생
+                //res.write(`data: ${JSON.stringify(obj)}\n\n`);
+
+                // 전체 데이터를 보냄
+                data[obj.id] = obj;
+                res.write(`data: ${JSON.stringify(data)}\n\n`);
 
                 channel.ack(msg);
 

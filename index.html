@@ -42,18 +42,22 @@
                     source.addEventListener('message', message => {
                         //console.log('Got', message);
                         const obj = JSON.parse(message.data);
-                        console.log(`id: ${obj.id}, value: ${obj.value}, result: ${obj.result}`);
+                        //console.log(`id: ${obj.id}, value: ${obj.value}, result: ${obj.result}`);
 
-                        app.items = app.items.map((item) => {
-                            if (item.id === obj.id) {
-                                const updatedItem = {
-                                    ...item,
-                                    result: obj.result
-                                };
-                                return updatedItem;
-                            }
-                            return item;
-                        });
+                        // 전체 데이터를 업데이트
+                        app.items = obj;
+
+                        // 큐에서 가져온 한 건만 보내도록 했으나 SSE를 사용하는 중 소실되는 문제 발생
+                        // app.items = app.items.map((item) => {
+                        //     if (item.id === obj.id) {
+                        //         const updatedItem = {
+                        //             ...item,
+                        //             result: obj.result
+                        //         };
+                        //         return updatedItem;
+                        //     }
+                        //     return item;
+                        // });
                     });
                 },
                 error: function (error) {
