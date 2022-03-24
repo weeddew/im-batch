@@ -13,7 +13,7 @@
     <div id="app">
         <ul id="list-1">
             <li v-for="item in items" v-bind:key="item.id">
-                {{ item.value }} - {{ item.result }}
+                [작업 No.{{ item.id }}] 입력값: {{ item.value }}, 결과값: {{ item.result }}
             </li>
         </ul>
     </div>

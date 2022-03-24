@@ -7,17 +7,19 @@ const LENGH = 100;
 const MAX_VALUE = 10;
 const QUEUE_URL = 'amqp://3.38.107.113';
 
-let data = [];
-
+/**
+ * index 페이지
+ */
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 })
 
 /**
+ * 시작 요청
  * 데이터 생성 후 SEND 큐로 보냄
  */
 app.get('/start', (req, res) => {
-    data = Array.from({length: LENGH}, (v,i) => {return {id: i, value: Math.floor(Math.random() * MAX_VALUE)+1}});
+    let data = Array.from({length: LENGH}, (v,i) => {return {id: i, value: Math.floor(Math.random() * MAX_VALUE)+1}});
 
     // 5초후 실행
     setTimeout(() => {
@@ -40,7 +42,7 @@ app.get('/start', (req, res) => {
 })
 
 /**
- * SSE 사용
+ * events 요청 (SSE 사용)
  * RECEIVE 큐에 데이터가 쌓일 때마다 SSE 를 보내서 화면 업데이트함
  */
 app.get('/events', async function(req, res) {
